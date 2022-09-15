@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-PATH = r"C:\Users\Admin\Desktop\DOK\Kąty.xlsx"
+PATH = r"C:\Users\Admin\PycharmProjects\ultrahaptics_visual\Kąty.xlsx"
 SHEET_NAME = "M1"
 
 # draw half-sphere
