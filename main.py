@@ -2,8 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-PATH = r"C:\Users\Admin\PycharmProjects\ultrahaptics_visual\Kąty.xlsx"
-SHEET_NAME = "M1"
+PATH = r"C:\Users\Admin\PycharmProjects\ultrahaptics_visual\Kąty_19_09_test.xlsx"
+SHEET_NAME = "M2"
 
 # draw half-sphere
 fig = plt.figure(figsize=[10, 8])
@@ -70,7 +70,6 @@ p = ax.scatter(points_x, points_y, points_z, c=values, cmap=plt.cm.RdYlGn_r)
 ax.set_facecolor((0.5, 0.5, 0.5))
 
 ax.text2D(0.03, 0.95, f"Object: {df.columns[2]}", transform=ax.transAxes, size=13, color="white")
-print(df.columns[2])
 
 # index = 10
 # ax.scatter(points_x[index], points_y[index], points_z[index], cmap=plt.cm.magma, s=100)
