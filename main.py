@@ -1,9 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
-PATH = r"C:\Users\Admin\PycharmProjects\ultrahaptics_visual\Kąty_19_09_test.xlsx"
-SHEET_NAME = "M2"
+PATH = r"C:\Users\Admin\Desktop\Kąty_20_09.xlsx"
+SHEET_NAME = "M1"
 
 # draw half-sphere
 fig = plt.figure(figsize=[10, 8])
@@ -52,7 +53,7 @@ join_vectors(points_z, z)
 
 
 # excel
-df = pd.read_excel(PATH, sheet_name=SHEET_NAME)
+df = pd.read_excel(PATH, sheet_name=SHEET_NAME, engine="openpyxl")
 
 values = [df.iloc[10, 12]]
 for r in range(9, 3, -1):
