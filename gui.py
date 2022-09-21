@@ -14,6 +14,7 @@ from matplotlib.backends.backend_tkagg import (
 )
 
 root = Tk()
+root.title("Wizualizacja Ultrahaptics")
 
 def update_label(label, new_text, column, row):
     label.grid_forget()
@@ -26,26 +27,25 @@ class Gui:
         self.frame_main = LabelFrame(root, padx=5, pady=5)
         self.frame_main.grid(row=0, column=1, padx=40)
 
-        self.frame = LabelFrame(self.frame_main, padx=5, pady=5)
-        self.frame.grid(row=0, column=2, padx=40)
+        self.path_frame = LabelFrame(self.frame_main, padx=5, pady=5)
+        self.path_frame.grid(row=0, column=2, padx=40)
 
-        self.frame2 = LabelFrame(self.frame_main, padx=5, pady=5)
-        self.frame2.grid(row=1, column=2, padx=40)
+        self.sheet_frame = LabelFrame(self.frame_main, padx=5, pady=5)
+        self.sheet_frame.grid(row=1, column=2, padx=40)
 
         self.frame3 = LabelFrame(self.frame_main, padx=5, pady=5)
         self.frame3.grid(row=2, column=2, padx=40)
 
-        self.generate_button = Button(self.frame3, text="Generuj wizualizację", command=self.get_plot)
-        self.generate_button.grid(row=0, column=0)
+        # self.generate_button = Button(self.frame3, text="Wizualizacja", command=self.get_plot)
+        # self.generate_button.grid(row=0, column=0)
 
-
-        self.M1_button = Button(self.frame2, text="M1", command=lambda: self.get_sheet_name("M1"))
-        self.M2_button = Button(self.frame2, text="M2", command=lambda: self.get_sheet_name("M2"))
-        self.M3_button = Button(self.frame2, text="M3", command=lambda: self.get_sheet_name("M3"))
-        self.L1_button = Button(self.frame2, text="L1", command=lambda: self.get_sheet_name("L1"))
-        self.L2_button = Button(self.frame2, text="L2", command=lambda: self.get_sheet_name("L2"))
-        self.H1_button = Button(self.frame2, text="H1", command=lambda: self.get_sheet_name("H1"))
-        self.H2_button = Button(self.frame2, text="H2", command=lambda: self.get_sheet_name("H2"))
+        self.M1_button = Button(self.sheet_frame, text="M1", command=lambda: self.get_sheet_name_and_plot("M1"), state=DISABLED)
+        self.M2_button = Button(self.sheet_frame, text="M2", command=lambda: self.get_sheet_name_and_plot("M2"), state=DISABLED)
+        self.M3_button = Button(self.sheet_frame, text="M3", command=lambda: self.get_sheet_name_and_plot("M3"), state=DISABLED)
+        self.L1_button = Button(self.sheet_frame, text="L1", command=lambda: self.get_sheet_name_and_plot("L1"), state=DISABLED)
+        self.L2_button = Button(self.sheet_frame, text="L2", command=lambda: self.get_sheet_name_and_plot("L2"), state=DISABLED)
+        self.H1_button = Button(self.sheet_frame, text="H1", command=lambda: self.get_sheet_name_and_plot("H1"), state=DISABLED)
+        self.H2_button = Button(self.sheet_frame, text="H2", command=lambda: self.get_sheet_name_and_plot("H2"), state=DISABLED)
 
         self.M1_button.grid(row=0, column=0)
         self.M2_button.grid(row=0, column=1)
@@ -55,23 +55,33 @@ class Gui:
         self.H1_button.grid(row=2, column=0)
         self.H2_button.grid(row=2, column=1)
 
-        self.sheet_name_label1 = Label(self.frame2)
-        update_label(self.sheet_name_label1, "Wybrana karta:", column=4, row=0)
+        self.sheet_name_label1 = Label(self.sheet_frame)
+        update_label(self.sheet_name_label1, "Wybrane dane:", column=4, row=0)
 
-        self.sheet_name_label = Label(self.frame2)
-        self.sheet_name = "Nie wybrano karty"
+        self.sheet_name_label = Label(self.sheet_frame)
+        self.sheet_name = " - "
         update_label(self.sheet_name_label, self.sheet_name, column=4, row=1)
 
-        self.path_label = Label(self.frame)
+        self.path_label = Label(self.path_frame)
         self.path = "Nie wybrano pliku"
         update_label(self.path_label, self.path, column=0, row=1)
 
-        self.get_path_button = Button(self.frame, text="Wybierz plik", command=self.get_path)
+        self.get_path_button = Button(self.path_frame, text="Wybierz plik", command=self.get_path)
         self.get_path_button.grid(row=0, column=0)
 
     def get_path(self):
         self.path = askopenfilename()
-        update_label(self.path_label, self.path, 0, 1)
+
+        if self.path:
+            update_label(self.path_label, self.path, 0, 1)
+
+            self.M1_button["state"] = NORMAL
+            self.M2_button["state"] = NORMAL
+            self.M3_button["state"] = NORMAL
+            self.L1_button["state"] = NORMAL
+            self.L2_button["state"] = NORMAL
+            self.H1_button["state"] = NORMAL
+            self.H2_button["state"] = NORMAL
 
     def get_plot(self):
         path = rf"{self.path}"
@@ -79,6 +89,7 @@ class Gui:
 
         # draw half-sphere
         fig = Figure(figsize=(10, 8), dpi=100)
+
         ax = fig.add_subplot(projection='3d')
         ax.set_box_aspect(aspect=(1, 1, 0.5))
 
@@ -89,6 +100,7 @@ class Gui:
 
         # fig.axis('off')
 
+        ax.set_axis_off()
         ax.plot_surface(x, y, z - np.min(z), color=[0, 0, 0], alpha=0.3)
 
         # points
@@ -143,15 +155,14 @@ class Gui:
         # ax.scatter(points_x[index], points_y[index], points_z[index], cmap=plt.cm.magma, s=100)
         fig.colorbar(p)
 
-
         figure_canvas = FigureCanvasTkAgg(fig, root)
         figure_canvas.get_tk_widget().grid(column=0, row=0)
 
-
-
-    def get_sheet_name(self, sheet_name):
+    def get_sheet_name_and_plot(self, sheet_name):
         self.sheet_name = sheet_name
         update_label(self.sheet_name_label, self.sheet_name, 4, 1)
+
+        self.get_plot()
 
 
 gui = Gui()
