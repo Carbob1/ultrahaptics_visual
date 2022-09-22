@@ -18,9 +18,8 @@ z = abs(np.cos(v)) * 0.9
 
 plt.axis('off')
 
-ax.plot_surface(x, y, z-np.min(z), color=[0, 0, 0], alpha=0.3)
-
-
+ax.plot_surface(x, y, z-np.min(z), color=[0, 0, 0], alpha=0.03)
+# ax.annotate()
 # points
 u, v = np.mgrid[0:2 * np.pi:25j, 0:np.pi:13j]
 x = np.cos(u) * np.sin(v)
@@ -67,15 +66,21 @@ for c in range(11, 2, -1):
 # c = 2
 # print(f"Wartosc z {c} kolumny, {r} rzedu: {df.iloc[r, c]}")
 
-p = ax.scatter(points_x, points_y, points_z, c=values, cmap=plt.cm.RdYlGn_r)
-ax.set_facecolor((0.5, 0.5, 0.5))
+p = ax.scatter(points_x, points_y, points_z, c=values, cmap=plt.cm.RdYlGn_r, linewidth=0.5, edgecolor='black', s=100)
+# p = ax.scatter(points_x, points_y, points_z, c=values, cmap=plt.cm.RdYlGn_r, s=100)
+# ax.set_facecolor((0.5, 0.5, 0.5))
+# ax.set_facecolor((0.92, 0.92, 0.92))
 
-ax.text2D(0.03, 0.95, f"Object: {df.columns[2]}", transform=ax.transAxes, size=13, color="white")
+# label
+# for x, y, z, val in zip(points_x, points_y, points_z, values):
+#     ax.text(x, y, z, int(val), zorder=4, size=10)
+
+ax.text2D(0.03, 0.95, f"Object: {df.columns[2]}", transform=ax.transAxes, size=14, color="black", font="Courier New")
 
 # index = 10
 # ax.scatter(points_x[index], points_y[index], points_z[index], cmap=plt.cm.magma, s=100)
-fig.colorbar(p)
+cbar = fig.colorbar(p)
+cbar.set_label("$L_{eq,40kHz}[dB]$", rotation=270, size=12)
+cbar.ax.get_yaxis().labelpad = 17
 
 plt.show()
-
-

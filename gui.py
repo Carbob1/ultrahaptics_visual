@@ -39,13 +39,15 @@ class Gui:
         # self.generate_button = Button(self.frame3, text="Wizualizacja", command=self.get_plot)
         # self.generate_button.grid(row=0, column=0)
 
-        self.M1_button = Button(self.sheet_frame, text="M1", command=lambda: self.get_sheet_name_and_plot("M1"), state=DISABLED)
-        self.M2_button = Button(self.sheet_frame, text="M2", command=lambda: self.get_sheet_name_and_plot("M2"), state=DISABLED)
-        self.M3_button = Button(self.sheet_frame, text="M3", command=lambda: self.get_sheet_name_and_plot("M3"), state=DISABLED)
-        self.L1_button = Button(self.sheet_frame, text="L1", command=lambda: self.get_sheet_name_and_plot("L1"), state=DISABLED)
-        self.L2_button = Button(self.sheet_frame, text="L2", command=lambda: self.get_sheet_name_and_plot("L2"), state=DISABLED)
-        self.H1_button = Button(self.sheet_frame, text="H1", command=lambda: self.get_sheet_name_and_plot("H1"), state=DISABLED)
-        self.H2_button = Button(self.sheet_frame, text="H2", command=lambda: self.get_sheet_name_and_plot("H2"), state=DISABLED)
+        self.M1_button = Button(self.sheet_frame, text="M1", command=lambda: self.get_sheet_name_and_plot("M1"), state=DISABLED, height=2, width=4)
+        self.M2_button = Button(self.sheet_frame, text="M2", command=lambda: self.get_sheet_name_and_plot("M2"), state=DISABLED, height=2, width=4)
+        self.M3_button = Button(self.sheet_frame, text="M3", command=lambda: self.get_sheet_name_and_plot("M3"), state=DISABLED, height=2, width=4)
+        self.L1_button = Button(self.sheet_frame, text="L1", command=lambda: self.get_sheet_name_and_plot("L1"), state=DISABLED, height=2, width=4)
+        self.L2_button = Button(self.sheet_frame, text="L2", command=lambda: self.get_sheet_name_and_plot("L2"), state=DISABLED, height=2, width=4)
+        self.H1_button = Button(self.sheet_frame, text="H1", command=lambda: self.get_sheet_name_and_plot("H1"), state=DISABLED, height=2, width=4)
+        self.H2_button = Button(self.sheet_frame, text="H2", command=lambda: self.get_sheet_name_and_plot("H2"), state=DISABLED, height=2, width=4)
+        self.empty_button1 = Button(self.sheet_frame, state=DISABLED, height=2, width=4)
+        self.empty_button2 = Button(self.sheet_frame, state=DISABLED, height=2, width=4)
 
         self.M1_button.grid(row=0, column=0)
         self.M2_button.grid(row=0, column=1)
@@ -54,6 +56,8 @@ class Gui:
         self.L2_button.grid(row=1, column=1)
         self.H1_button.grid(row=2, column=0)
         self.H2_button.grid(row=2, column=1)
+        self.empty_button2.grid(row=1, column=2)
+        self.empty_button1.grid(row=2, column=2)
 
         self.sheet_name_label1 = Label(self.sheet_frame)
         update_label(self.sheet_name_label1, "Wybrane dane:", column=4, row=0)
@@ -101,7 +105,7 @@ class Gui:
         # fig.axis('off')
 
         ax.set_axis_off()
-        ax.plot_surface(x, y, z - np.min(z), color=[0, 0, 0], alpha=0.3)
+        ax.plot_surface(x, y, z - np.min(z), color=[0, 0, 0], alpha=0.03)
 
         # points
         u, v = np.mgrid[0:2 * np.pi:25j, 0:np.pi:13j]
@@ -146,14 +150,17 @@ class Gui:
         # c = 2
         # print(f"Wartosc z {c} kolumny, {r} rzedu: {df.iloc[r, c]}")
 
-        p = ax.scatter(points_x, points_y, points_z, c=values, cmap="RdYlGn_r")
-        ax.set_facecolor((0.5, 0.5, 0.5))
+        p = ax.scatter(points_x, points_y, points_z, c=values, cmap="RdYlGn_r", linewidth=0.5, edgecolor='black', s=100)
+        # ax.set_facecolor((0.92, 0.92, 0.92))
 
-        ax.text2D(0.03, 0.95, f"Object: {df.columns[2]}", transform=ax.transAxes, size=13, color="white")
+        ax.text2D(0.03, 0.95, f"Object: {df.columns[2]}", transform=ax.transAxes, size=15, color="black", font="Courier New")
 
         # index = 10
         # ax.scatter(points_x[index], points_y[index], points_z[index], cmap=plt.cm.magma, s=100)
-        fig.colorbar(p)
+        cbar = fig.colorbar(p)
+
+        cbar.set_label("$L_{eq,40kHz}[dB]$", rotation=270, size=12)
+        cbar.ax.get_yaxis().labelpad = 17
 
         figure_canvas = FigureCanvasTkAgg(fig, root)
         figure_canvas.get_tk_widget().grid(column=0, row=0)
