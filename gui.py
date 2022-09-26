@@ -27,10 +27,10 @@ class Gui:
         self.frame_main = LabelFrame(root, padx=5, pady=5)
         self.frame_main.grid(row=0, column=1, padx=40)
 
-        self.path_frame = LabelFrame(self.frame_main, padx=5, pady=5)
+        self.path_frame = LabelFrame(self.frame_main, padx=5, pady=5, borderwidth=0)
         self.path_frame.grid(row=0, column=2, padx=40)
 
-        self.sheet_frame = LabelFrame(self.frame_main, padx=5, pady=5)
+        self.sheet_frame = LabelFrame(self.frame_main, padx=5, pady=5, borderwidth=0)
         self.sheet_frame.grid(row=1, column=2, padx=40)
 
         self.frame3 = LabelFrame(self.frame_main, padx=5, pady=5)
@@ -161,6 +161,9 @@ class Gui:
 
         cbar.set_label("$L_{eq,40kHz}[dB]$", rotation=270, size=12)
         cbar.ax.get_yaxis().labelpad = 17
+
+        for x, y, z, val in zip(points_x, points_y, points_z, values):
+            ax.text(x, y, z + 0.05, int(val), zorder=4, size=7)
 
         figure_canvas = FigureCanvasTkAgg(fig, root)
         figure_canvas.get_tk_widget().grid(column=0, row=0)

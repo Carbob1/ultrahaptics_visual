@@ -72,8 +72,8 @@ p = ax.scatter(points_x, points_y, points_z, c=values, cmap=plt.cm.RdYlGn_r, lin
 # ax.set_facecolor((0.92, 0.92, 0.92))
 
 # label
-# for x, y, z, val in zip(points_x, points_y, points_z, values):
-#     ax.text(x, y, z, int(val), zorder=4, size=10)
+for x, y, z, val in zip(points_x, points_y, points_z, values):
+    ax.text(x, y, z+0.05, int(val), zorder=4, size=7)
 
 ax.text2D(0.03, 0.95, f"Object: {df.columns[2]}", transform=ax.transAxes, size=14, color="black", font="Courier New")
 
